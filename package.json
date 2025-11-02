@@ -1,0 +1,22 @@
+{
+  "name": "arj",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.1.16",
+    "preact": "^10.27.2",
+    "react-router-dom": "^7.9.5",
+    "tailwindcss": "^4.1.16"
+  },
+  "devDependencies": {
+    "@preact/preset-vite": "^2.10.2",
+    "@vitejs/plugin-react": "^5.1.0",
+    "vite": "^7.1.7"
+  }
+}
