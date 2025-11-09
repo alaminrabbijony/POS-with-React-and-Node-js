@@ -1,17 +1,20 @@
 import { FaSearch, FaBell, FaUserCircle } from "react-icons/fa";
+import { MdCoffeeMaker } from "react-icons/md";
+
 
 export default function Header() {
   return (
     <header className="flex justify-between items-center px-8 py-4 bg-[#0d0d0d] text-white border-b border-[#1f1f1f]">
       {/* Left: Logo */}
       <div className="flex items-center gap-3">
-        <img
-          src="/logo.png"
+        {/* <img
+          src={''}
           alt="Restro Logo"
           className="h-8 w-8 object-cover rounded"
-        />
+        /> */}
+        <MdCoffeeMaker size={40} />
         <h1 className="text-xl font-semibold tracking-wide text-[#f5f5f5]">
-          Restro
+          Caffee
         </h1>
       </div>
 

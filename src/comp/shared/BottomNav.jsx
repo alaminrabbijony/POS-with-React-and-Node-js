@@ -14,7 +14,7 @@ export default function BottomNav() {
         <button onClick={()=> navigate('/order')} className="flex items-center justify-center text-[#ababab] w-[200px]">
           <MdOutlineBorderColor className="inline mr-4" size={15} />Orders
         </button>
-        <button onClick={()=> navigate('/')} className="flex items-center justify-center text-[#ababab] w-[200px]">
+        <button onClick={()=> navigate('/tables')} className="flex items-center justify-center text-[#ababab] w-[200px]">
           <MdTableBar className="inline mr-4" size={15} />Tables
         </button>
         <button className="flex items-center justify-center text-[#ababab] w-[200px]">
