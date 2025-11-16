@@ -1,9 +1,17 @@
 import React from "react";
 import { getRandomBG } from "../../const";
+import { useNavigate } from "react-router-dom";
 
 const TableCard = ({ key, name, status, initials }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    if (status === "Booked") return;
+    navigate("/menu");
+  };
   return (
     <div
+      onClick={handleClick}
       className="bg-[#262626] border border-[#2f2f2f] 
     rounded-xl p-6 w-full min-h-[180px] hover:bg-[#2e2e2e]
      transition-all duration-200 shadow-sm hover:shadow-md

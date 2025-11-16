@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import { Home, Auth, Order, Tables } from "./pages";
+import { Home, Auth, Order, Tables, Menu } from "./pages";
 import Header from "./comp/shared/Header";
 import BottomNav from "./comp/shared/BottomNav";
 export default function App() {
@@ -12,6 +12,8 @@ export default function App() {
         <Route path="/auth" element={<Auth />} />
         <Route path="/order" element={<Order />} />
         <Route path="/tables" element={<Tables />} />
+        <Route path="/menu*" element={<Menu />} />
+        <Route path="" element={<div>Nothing Found</div>} />
       </Routes>
       <BottomNav />
     </Router>

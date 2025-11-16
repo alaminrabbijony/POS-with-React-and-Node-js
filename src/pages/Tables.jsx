@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { use, useState } from "react";
 import BottomNav from "../comp/shared/BottomNav";
 import BackBtn from "../comp/shared/BackBtn";
 import TableCard from "../comp/Tables/TableCard";
 import { tables } from "../const/const";
+import { useNavigate } from "react-router-dom";
 
 const Tables = () => {
   const [status, setStatus] = useState("All");
+
 
   return (
     <section className="bg-[#1f1f1f] h-[calc(100vh-5rem)] flex flex-col">
@@ -20,12 +22,15 @@ const Tables = () => {
           {["All", "Booked"].map((label) => (
             <button
               key={label}
-              onClick={() => setStatus(label)}
-              className={`text-[#ababab] text-lg font-semibold px-5 py-2 rounded-lg transition-all duration-150 ${
-                status === label
-                  ? "bg-[#383838] text-[#f5f5f5]"
-                  : "hover:bg-[#2a2a2a]"
-              }`}
+              onClick={() => {
+                setStatus(label);
+              }}
+              className={`text-[#ababab] text-lg font-semibold px-5 py-2 rounded-lg
+                 transition-all duration-150 ${
+                   status === label
+                     ? "bg-[#383838] text-[#f5f5f5]"
+                     : "hover:bg-[#2a2a2a]"
+                 }`}
             >
               {label}
             </button>
@@ -49,12 +54,13 @@ const Tables = () => {
       >
         {tables.map((table) => {
           return (
-            <TableCard key={table.id}
+            <TableCard
+              key={table.id}
               name={table.name}
               status={table.status}
               initials={table.initial}
             />
-          )
+          );
         })}
       </div>
 
