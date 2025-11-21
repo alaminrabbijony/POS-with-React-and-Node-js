@@ -3,3 +3,5 @@ declare module '*.jpeg';
 declare module '*.png';
 declare module '*.webp';
 declare module '*.svg';
+declare module '*.css';
+declare module '*.scss'

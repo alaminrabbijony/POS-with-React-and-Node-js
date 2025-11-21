@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
-const Greetings = () => {
-  const [dateTime, setDateTime] = useState(new Date());
+export default function Greetings() {
+  const [dateTime, setDateTime] = useState<Date>(new Date());
 
   useEffect(() => {
     const timer = setInterval(() => setDateTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
 
-  const formatDate = (date) => {
+  const formatDate = (date: Date): string => {
     const months = [
       "January",
       "February",
@@ -29,7 +29,7 @@ const Greetings = () => {
     )}, ${date.getFullYear()}`;
   };
 
-  const formatTime = (date) => {
+  const formatTime = (date: Date): string => {
     const hours = String(date.getHours()).padStart(2, "0");
     const minutes = String(date.getMinutes()).padStart(2, "0");
     const seconds = String(date.getSeconds()).padStart(2, "0");
@@ -46,6 +46,7 @@ const Greetings = () => {
           Give ur best performance today!
         </p>
       </div>
+
       <div>
         <h1 className="text-[#f5f5f5] text-3xl font-bold tracking-wide w-[130px]">
           {formatTime(dateTime)}
@@ -54,6 +55,4 @@ const Greetings = () => {
       </div>
     </div>
   );
-};
-
-export default Greetings;
+}

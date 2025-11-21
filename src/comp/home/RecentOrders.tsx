@@ -1,10 +1,10 @@
-import React from "react";
 import { FaSearch } from "react-icons/fa";
-import OrderList from "./OrderList";
+import OrderList from "./OrderList.js";
 
-const RecentOrders = () => {
+export default function RecentOrders() {
   return (
     <div className="px-8 mt-6">
+      
       {/* Header Row */}
       <div className="flex justify-between items-center px-6 py-4">
         <h1 className="text-[#f5f5f5] text-lg font-semibold tracking-wide">
@@ -27,21 +27,11 @@ const RecentOrders = () => {
 
       {/* Order List */}
       <div className="mt-4 px-6 overflow-y-scroll h-[300px] scrollbar-hide">
-        <OrderList />
-        <OrderList />
-        <OrderList />
-        <OrderList />
-        <OrderList />
-        <OrderList />
-        <OrderList />
-        <OrderList />
-        <OrderList />
-        <OrderList />
-        <OrderList />
-        <OrderList />
+        {Array.from({ length: 12 }).map((_, i) => (
+          <OrderList key={i} />
+        ))}
       </div>
+
     </div>
   );
-};
-
-export default RecentOrders;
+}

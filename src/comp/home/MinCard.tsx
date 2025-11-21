@@ -1,12 +1,25 @@
-import React from "react";
+import type { ReactNode } from "react";
 
-const MinCard = ({ title, icon, number, footerNum }) => {
+type MinCardProps = {
+  title: string;
+  icon: ReactNode;
+  number: number;
+  footerNum: number;
+};
+
+export default function MinCard({
+  title,
+  icon,
+  number,
+  footerNum,
+}: MinCardProps) {
   return (
     <div className="bg-[#1a1a1a] py-5 px-5 rounded-lg w-[50%]">
       <div className="flex items-start justify-between">
         <h1 className="text-[#f5f5f5] text-lg font-semibold tracking-wide">
           {title}
         </h1>
+
         <button
           className={`${
             title === "Total Earnings" ? "bg-[#02ca3a]" : "bg-[#f6b100]"
@@ -16,12 +29,13 @@ const MinCard = ({ title, icon, number, footerNum }) => {
         </button>
       </div>
 
-      <h1 className="text-[#f5f5f5] text-4xl font-bold mt-5">{title === "Total Earnings" ? `${number}` : number}</h1>
+      <h1 className="text-[#f5f5f5] text-4xl font-bold mt-5">
+        {title === "Total Earnings" ? `${number}` : number}
+      </h1>
+
       <h1 className="text-[#f5f5f5] text-lg mt-2">
         <span className="text-[#02ca3a]">{footerNum}%</span> than yesterday
       </h1>
     </div>
   );
-};
-
-export default MinCard;
+}
