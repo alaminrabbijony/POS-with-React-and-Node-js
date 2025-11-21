@@ -1,14 +1,18 @@
 import React from "react";
 import BackBtn from "../comp/shared/BackBtn";
-import { FaUserCircle } from "react-icons/fa";
+import { FaNotesMedical, FaUserCircle } from "react-icons/fa";
 import { IoRestaurantOutline } from "react-icons/io5";
 import MenuContainer from "../comp/Menu/MenuContainer";
+import { RiDeleteBin2Fill } from "react-icons/ri";
+import CustomerInfo from "../comp/Menu/CustomerInfo";
+import CartInfo from "../comp/Menu/CartInfo";
+import BillsInfo from "../comp/Menu/BillsInfo";
 
 const Menu = () => {
   return (
        <section className="bg-[#1f1f1f] h-[calc(100vh-5rem)] flex flex-row">
       {/* Left Section */}
-      <div className="flex-[8] border-r border-gray-700">
+      <div className="flex-[7] border-r border-gray-700">
         <div className="flex items-center justify-between px-10 py-4 mt-2">
           <div className="flex items-center gap-4">
             <BackBtn />
@@ -29,7 +33,15 @@ const Menu = () => {
       </div>
 
       {/* Right Section */}
-      <div className="flex-[2] bg-[#1f1]"></div>
+      <div className="flex-[3] bg-[#1a1a1a] mt-4 mr-3 h-[780px] rounded-lg pt-2">
+        {/* Customer Info */}
+        <CustomerInfo />
+        <hr className="border-[#2a2a2a] border-t-2" />
+        {/* cart Item */}
+       <CartInfo />
+        {/* Bills */}
+        <BillsInfo/>
+      </div>
     </section>
   );
 };
