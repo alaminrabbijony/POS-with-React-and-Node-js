@@ -5,18 +5,18 @@ import { GrRadialSelected } from "react-icons/gr";
 import { FaShoppingCart } from "react-icons/fa";
 
 import { menus } from "../../const/const.js";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "../../store/redux/store.js";
+import { addItemToCart } from "../../store/redux/slices/cartSlice.js";
+import type { MenuItem } from "../../store/Types.js";
 
 /**
  * Types (matches structure in const file)
  */
-type MenuItem = {
-  id: number;
-  name: string;
-  price: number;
-};
+
 
 type Menu = {
-  id: number;
+  id: string;
   name: string;
   bgColor?: string;
   icon?: ReactNode;
@@ -33,7 +33,17 @@ type Menu = {
 export default function MenuContainer() {
   const [selectedMenu, setSelectedMenu] = useState<Menu>(menus[0] as Menu);
   const [counts, setCounts] = useState<Record<number, number>>({});
+  const dispatch = useDispatch<AppDispatch>()
 
+  const handleAddToCart = (item: MenuItem) => {
+    dispatch(addItemToCart({
+      id: item.id, // change this when DB dynamic menu
+      name: item.name,
+      price: item.price,
+      quantity: counts[item.id] ?? 0,
+      totalPrice: item.price * (counts[item.id] ?? 0),
+    }))
+  }
   const increment = (id: number) => {
     setCounts((prev) => {
       const current = prev[id] ?? 0;
@@ -105,7 +115,7 @@ export default function MenuContainer() {
                   title="Add to quick cart"
                   className="bg-[#2e4a40] text-[#02ca3a] p-2 rounded-lg"
                 >
-                  <FaShoppingCart size={20} />
+                  <FaShoppingCart onClick={() => handleAddToCart(item)} size={20} />
                 </button>
               </div>
 

@@ -14,7 +14,7 @@ const customerSlice =  createSlice({
     initialState: intialState,
     reducers: {
         setCustomerInfo: (state, action) => {
-            const {CustomerId,name, phone, guest, tableNo} = action.payload;
+            const {name, phone, guest, tableNo} = action.payload;
             state.orderId = `${Date.now()}`;
             state.customerName = name;
             state.customerPhone = phone;
