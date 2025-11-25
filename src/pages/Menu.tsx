@@ -5,8 +5,11 @@ import MenuContainer from "../comp/Menu/MenuContainer.js";
 import CustomerInfo from "../comp/Menu/CustomerInfo.js";
 import CartInfo from "../comp/Menu/CartInfo.js";
 import BillsInfo from "../comp/Menu/BillsInfo.js";
+import { useSelector } from "react-redux";
 
 export default function Menu() {
+  const customerData = useSelector( (state: any) => state.customer)
+
   return (
     <section className="bg-[#1f1f1f] h-[calc(100vh-5rem)] flex flex-row">
 
@@ -26,9 +29,9 @@ export default function Menu() {
               <IoRestaurantOutline className="text-3xl text-gray-400" />
               <div className="leading-tight">
                 <h1 className="text-[#f5f5f5] text-sm font-bold">
-                  Customer Name
+                  {customerData.customerName || "Customer Name"}
                 </h1>
-                <p className="text-xs text-gray-500">Table 01</p>
+                <p className="text-xs text-gray-500">Table: {customerData.tableNo}</p>
               </div>
             </div>
           </div>

@@ -13,3 +13,34 @@ export const getRandomBG = () => {
   ];
   return colors[Math.floor(Math.random() * colors.length)];
 };
+export const getAvatar = (name: string) => {
+  if(!name) return "";
+  return name.split(' ').map(w => w[0]).join('').toUpperCase()
+}
+export const formatDate = (date: Date): string => {
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+    return `${months[date.getMonth()]} ${String(date.getDate()).padStart(
+      2,
+      "0"
+    )}, ${date.getFullYear()}`;
+  };
+
+ export const formatTime = (date: Date): string => {
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const seconds = String(date.getSeconds()).padStart(2, "0");
+    return `${hours}:${minutes}:${seconds}`;
+  };

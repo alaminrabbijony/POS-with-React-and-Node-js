@@ -7,7 +7,7 @@ import { FaShoppingCart } from "react-icons/fa";
 import { menus } from "../../const/const.js";
 
 /**
- * Types (matches structure in your const file)
+ * Types (matches structure in const file)
  */
 type MenuItem = {
   id: number;
@@ -24,12 +24,12 @@ type Menu = {
 };
 
 /**
- * MenuContainer (TSX, PRO)
+ * MenuContainer (TSX)
  *
  * - Per-item quantity tracking via `counts: Record<itemId, qty>`
- * - Limits qty between 0 and 4 (same behavior as your original limit)
- * - Clear, typed handlers
+ * - Limits qty between 0 and 4 (same behavior)
  */
+
 export default function MenuContainer() {
   const [selectedMenu, setSelectedMenu] = useState<Menu>(menus[0] as Menu);
   const [counts, setCounts] = useState<Record<number, number>>({});
@@ -59,7 +59,8 @@ export default function MenuContainer() {
           return (
             <div
               key={menu.id}
-              className="flex flex-col items-start justify-between p-4 rounded-lg h-[100px] cursor-pointer"
+              className="flex flex-col items-start justify-between p-4 rounded-lg h-[100px]
+               cursor-pointer"
               style={{ backgroundColor: bg }}
               onClick={() => {
                 setSelectedMenu(menu);
@@ -93,7 +94,8 @@ export default function MenuContainer() {
           return (
             <div
               key={item.id}
-              className="flex flex-col items-start justify-between gap-3 p-4 rounded-lg min-h-[130px] cursor-pointer hover:bg-[#2a2a2a] bg-[#1a1a1a]"
+              className="flex flex-col items-start justify-between gap-3 p-4 rounded-lg
+               min-h-[130px] cursor-pointer hover:bg-[#2a2a2a] bg-[#1a1a1a]"
             >
               <div className="flex items-center justify-between w-full">
                 <h1 className="text-[#f5f5f5] text-lg font-semibold">{item.name}</h1>
@@ -110,10 +112,12 @@ export default function MenuContainer() {
               <p className="text-[#ababab] text-xl font-bold">${item.price}</p>
 
               <div className="w-full mt-auto">
-                <div className="flex items-center justify-between bg-[#111] px-4 py-2 rounded-lg border border-[#2a2a2a]">
+                <div className="flex items-center justify-between bg-[#111] px-4 py-2 
+                rounded-lg border border-[#2a2a2a]">
                   <button
                     onClick={() => decrement(item.id)}
-                    className="text-yellow-400 text-xl px-2 hover:scale-110 active:scale-95 transition-all"
+                    className="text-yellow-400 text-xl px-2 hover:scale-110 active:scale-95 
+                    transition-all"
                     aria-label={`decrement-${item.id}`}
                   >
                     &minus;
@@ -125,7 +129,8 @@ export default function MenuContainer() {
 
                   <button
                     onClick={() => increment(item.id)}
-                    className="text-yellow-400 text-xl px-2 hover:scale-110 active:scale-95 transition-all"
+                    className="text-yellow-400 text-xl px-2 hover:scale-110 
+                    active:scale-95 transition-all"
                     aria-label={`increment-${item.id}`}
                   >
                     &#43;

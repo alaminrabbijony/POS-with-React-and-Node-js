@@ -1,5 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { getRandomBG } from "../../const/index.js";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "../../store/redux/store.js";
+import { updateTable } from "../../store/redux/slices/CustomerSlices.js";
 
 
 type TableCardProps = {
@@ -14,9 +17,11 @@ export default function TableCard({
   initials,
 }: TableCardProps) {
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>()
 
   const handleClick = () => {
     if (status === "Booked") return;
+    dispatch(updateTable({tableNo: name}));
     navigate("/menu");
   };
 
