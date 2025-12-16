@@ -1,29 +1,36 @@
 import { useNavigate } from "react-router-dom";
-import { getRandomBG } from "../../const/index.js";
-import { useDispatch } from "react-redux";
-import type { AppDispatch } from "../../store/redux/store.js";
+import { getAvatar, getRandomBG } from "../../const/index.js";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "../../store/redux/store.js";
 import { updateTable } from "../../store/redux/slices/CustomerSlices.js";
-
+import { MdDeleteForever } from "react-icons/md";
+import { removeTable } from "../../store/redux/slices/tableSlice.js";
+import { useMutation } from "@tanstack/react-query";
+import { deleteTable } from "../../https/index.js";
+import type { AxiosError } from "axios";
+import type { ErrorRes } from "../../types/types.js";
+import { enqueueSnackbar } from "notistack";
+import { FaLongArrowAltRight } from "react-icons/fa";
 
 type TableCardProps = {
   name: string;
+  seats: string;
   status: "Booked" | "Available" | string;
   initials: string;
 };
 
-export default function TableCard({
-  name,
-  status,
-  initials,
-}: TableCardProps) {
+export default function TableCard({ name, status, initials }: TableCardProps) {
   const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useDispatch<AppDispatch>();
+  const userData = useSelector((state: RootState) => state.user);
 
   const handleClick = () => {
     if (status === "Booked") return;
-    dispatch(updateTable({tableNo: name}));
+    dispatch(updateTable({ tableNo: name }));
     navigate("/menu");
   };
+
+  const handleRemoveTable = () => {};
 
   return (
     <div
@@ -33,7 +40,10 @@ export default function TableCard({
       flex flex-col justify-between"
     >
       <div className="flex items-center justify-between px-1">
-        <h1 className="text-[#f5f5f5] text-xl font-semibold">{name}</h1>
+        <h1 className="text-[#f5f5f5] text-xl font-semibold">
+          Table<FaLongArrowAltRight className="text-[#ababab] ml-2 inline" />
+           {name}
+        </h1>
 
         <p
           className={`${
@@ -47,10 +57,23 @@ export default function TableCard({
       </div>
 
       <div className="flex items-center justify-center my-5">
-        <h1 className={`${getRandomBG()} text-white rounded-full p-5 text-xl`}>
-          {initials}
-        </h1>
+        <h1 className={`text-white rounded-full p-5 text-xl`}
+         style={{backgroundColor : initials ? getRandomBG() : "#1f1f1f"}} >
+          {getAvatar(initials) || "N/A"}
+          </h1>
       </div>
+      {userData.role === "Admin" && (
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            handleRemoveTable();
+          }}
+          className="self-end mt-2 p-2 rounded-lg hover:bg-red-900/30 transition"
+          aria-label="Delete table"
+        >
+          <MdDeleteForever size={40} className="text-red-500" />
+        </button>
+      )}
     </div>
   );
 }

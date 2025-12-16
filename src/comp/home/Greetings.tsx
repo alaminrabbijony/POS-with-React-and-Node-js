@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 
 export default function Greetings() {
   const [dateTime, setDateTime] = useState<Date>(new Date());
+
+  const userData =  useSelector((state: any) => state.user)
 
   useEffect(() => {
     const timer = setInterval(() => setDateTime(new Date()), 1000);
@@ -40,7 +43,7 @@ export default function Greetings() {
     <div className="flex justify-between px-8 mt-5">
       <div>
         <h1 className="text-[#f5f5f5] text-2xl font-semibold tracking-wide">
-          Good Afternoon, ARJ
+          Good Afternoon, {userData.name}
         </h1>
         <p className="text-[#ababab] text-sm">
           Give ur best performance today!

@@ -25,3 +25,13 @@ export type CartState = {
     quantity: number;
     totalPrice: number;
 }
+
+export type UserInfoState = {
+    _id?: string | undefined,
+    name: string,
+    phone: string,
+    email: string,
+    token?: string | undefined,
+    role: string, // for authorization
+    isAuth: boolean
+}

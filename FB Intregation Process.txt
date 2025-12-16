@@ -1,0 +1,35 @@
+                !! Front and Backend ntregation !!
+
+1. use transtack query for front and back intregation
+    -> npm i @tanstack/react-query
+2. notistack for error and success messages
+    -> npm install notistack
+3. Axios for api call
+    -> npm install axios
+4. setup react query and notistack using providers
+
+//Connection between F-B
+5. create index.js for api calls in http
+6. create api intance of axios
+7. create .env file with vite_backend_url http:// localhost:8000
+8. add mutation fuctions for the connecting front with back
+9.install cors and add that in Backend app.js
+    -> npm i cors
+10. define user slicer and use dispatch to move data
+11. use dispatch in the loginMutation's onSuccess fuction
+12. deliver the eact thing that needed to be passdown
+
+    !! What i leatrnt FB Intregation !!
+-> define slice in the redux store
+-> define async func in the controller for action
+-> add the route to the route.js
+-> this way new api is created
+-> intregate the api in the https-> index.js as function aka apicall function
+-> use  a mutation function in the comp for intregation 
+-> add the apicall funtion in the mutationFn
+-> onSuccess: will hold dispatch call
+-> data will be destructured and will be deliverde via dispacth call in onSuccess
+-> onError will handle the errore with enquesnackBar
+-> now the data from the Backend can be used with useSelector via redux store
+
+

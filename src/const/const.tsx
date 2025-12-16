@@ -12,6 +12,8 @@ import { MdTableBar, MdCategory } from "react-icons/md";
 import { BiSolidDish } from "react-icons/bi";
 
 
+export const Role = ["Barista", "Cashier", "Admin"]
+
 export const popularDishes = [
     {
       id: 1,
