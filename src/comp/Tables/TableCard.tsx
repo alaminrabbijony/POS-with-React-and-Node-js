@@ -13,20 +13,22 @@ import { enqueueSnackbar } from "notistack";
 import { FaLongArrowAltRight } from "react-icons/fa";
 
 type TableCardProps = {
+  id: string;
   name: string;
   seats: string;
   status: "Booked" | "Available" | string;
   initials: string;
 };
 
-export default function TableCard({ name, status, initials }: TableCardProps) {
+export default function TableCard({ id, name, status, initials }: TableCardProps) {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const userData = useSelector((state: RootState) => state.user);
 
   const handleClick = () => {
     if (status === "Booked") return;
-    dispatch(updateTable({ tableNo: name }));
+    const table = { tableId: id, tableNo: name };
+    dispatch(updateTable({table}));
     navigate("/menu");
   };
 
@@ -35,6 +37,7 @@ export default function TableCard({ name, status, initials }: TableCardProps) {
   return (
     <div
       onClick={handleClick}
+      key={id}
       className="bg-[#262626] border border-[#2f2f2f] rounded-xl p-6 w-full min-h-[180px] 
       hover:bg-[#2e2e2e] transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer 
       flex flex-col justify-between"

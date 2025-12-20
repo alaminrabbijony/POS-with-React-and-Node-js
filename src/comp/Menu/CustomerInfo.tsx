@@ -5,6 +5,7 @@ import { formatDate, getAvatar } from "../../const/index.js";
 const CustomerInfo = () => {
   const [date, setDate] = useState<Date>(new Date());
   const customerData = useSelector((state: any) => state.customer);
+  
   return (
     <div className="flex items-center justify-between px-4 py-3">
       <div className="flex flex-col items-start">

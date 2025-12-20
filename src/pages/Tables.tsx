@@ -78,6 +78,7 @@ export default function Tables() {
         {resdata?.data.data.map((table: Table) => (
           <TableCard
             key={table._id}
+            id={table._id}
             name={table.tableNo}
             status={table.status}
             initials={table?.currentOrder?.customerDetails.name}

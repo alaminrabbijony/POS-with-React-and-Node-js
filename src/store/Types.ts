@@ -3,7 +3,7 @@ export type CustomerInfoTypes = {
     customerName: string;
     customerPhone: string;
     guest: number;
-    tableNo: string | number;
+    table: object | null;
 }
 
 export type MenuItem = {

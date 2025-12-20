@@ -16,6 +16,9 @@ import { useSelector } from "react-redux";
 import useLoadUserData from "./hooks/useLoadData.js";
 import { ClipLoader } from "react-spinners";
 import Dashboard from "./pages/Dashboard.js";
+import PaymentSuccess from "./pages/PaymentSuccess.js";
+import PaymentFailure from "./pages/PaymentFailure.js";
+
 
 
   const ProtectedRoutes = ({children}: any) => {
@@ -84,6 +87,31 @@ const Layout = () => {
           element={
             <ProtectedRoutes>
               <Menu />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/processing"
+          element={
+            <ProtectedRoutes>
+              <PaymentFailure />
+            </ProtectedRoutes>
+          }
+        />
+
+        <Route
+          path="/success"
+          element={
+            <ProtectedRoutes>
+              <PaymentSuccess />
+            </ProtectedRoutes>
+          }
+        />
+         <Route
+          path="/failure"
+          element={
+            <ProtectedRoutes>
+              <PaymentFailure />
             </ProtectedRoutes>
           }
         />

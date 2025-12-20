@@ -71,7 +71,8 @@ const cartSlice = createSlice({
       // Recalculate total quantity and price
       recalc(state);
     },
+    removeAllItems: (state) => initialState
   },
 });
-export const { addItemToCart, removeItemFromCart, updateQuantity } = cartSlice.actions;
+export const { addItemToCart, removeItemFromCart, updateQuantity, removeAllItems } = cartSlice.actions;
 export default cartSlice.reducer;

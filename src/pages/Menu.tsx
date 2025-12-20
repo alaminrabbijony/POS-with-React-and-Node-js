@@ -31,7 +31,7 @@ export default function Menu() {
                 <h1 className="text-[#f5f5f5] text-sm font-bold">
                   {customerData.customerName || "Customer Name"}
                 </h1>
-                <p className="text-xs text-gray-500">Table: {customerData.tableNo}</p>
+                <p className="text-xs text-gray-500">Table: {customerData.table?.tableNo}</p>
               </div>
             </div>
           </div>

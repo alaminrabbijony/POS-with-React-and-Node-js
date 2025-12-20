@@ -49,7 +49,27 @@ export const getUserData = () =>
 
 export const logOutUser = () => api.post("/api/user/logout")
 
+
+// Table Endpoints
 export const addTable = (data: any) => api.post("/api/table", data)
 export const getTableData = () => api.get("/api/table")
 export const deleteTable = (id: string) => api.delete(`/api/table/${id}`)
 
+type tableData = {
+  status: string;
+  tableId: string;
+  orderId: string;
+}
+export const updateTable = ({tableId, ...table}: tableData) => api.put(`/api/table/${tableId}`, table)
+
+
+
+// Order Endpoints
+export const addOrder = (data: any) => api.post("/api/order", data)
+export const getOrders = () => api.get("/api/order")
+export const getReceipt = (orderId: string| null) => api.get(`/api/order/receipt/${orderId}`)
+
+
+// Payment Endpoints
+export const createSSLCommerzOrder = (data: any) => api.post("/api/payment/init", data)
+export const validatePayment = () => api.post("/api/payment/validate")

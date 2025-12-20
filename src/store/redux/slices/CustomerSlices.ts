@@ -6,7 +6,7 @@ const intialState : CustomerInfoTypes = {
     customerName: "",
     customerPhone: "",
     guest: 0,
-    tableNo: '',
+    table: null,
 }
 
 const customerSlice =  createSlice({
@@ -19,11 +19,11 @@ const customerSlice =  createSlice({
             state.customerName = name;
             state.customerPhone = phone;
             state.guest = guest;
-            state.tableNo = tableNo;
+            state.table = null;
         },
         removeCustomerInfo : (state) => intialState,
         updateTable: (state, action) => {
-            state.tableNo = action.payload.tableNo;
+            state.table = action.payload.table;
         }
     }
 })
