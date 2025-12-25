@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { MdTableBar, MdCategory } from "react-icons/md";
 import { BiSolidDish } from "react-icons/bi";
 import Metrics from "../comp/Dashboard/Metrics.js";
-import RecentOrders from "../comp/Dashboard/RecentOrders.js";
+
 import DashModal from "../comp/Dashboard/DashModal.js";
+import RecentOrderDashBoard from "../comp/Dashboard/RecentOrderDashBoard.js";
 
 const buttons = [
   { label: "Add Table", icon: <MdTableBar />, action: "table" },
@@ -57,7 +58,7 @@ const Dashboard = () => {
       </div>
 
       {activeTab === "Metrics" && <Metrics />}
-      {activeTab === "Orders" && <RecentOrders />}
+      {activeTab === "Orders" && <RecentOrderDashBoard />}
       {activeTab === "Payments" && (
         <div className="text-white p-6 container mx-auto">
           Payment Component Coming Soon

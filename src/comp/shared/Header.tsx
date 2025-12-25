@@ -48,12 +48,51 @@ export default function Header() {
       <div className="flex items-center gap-6">
         {/* Notification Icon */}
         {userData.role === "Admin" && (
-          <button className="relative hover:text-gray-300 transition">
-          <MdDashboard className="text-xl" 
+          <button
             onClick={() => navigate("/dashboard")}
-          />
-          <span className="absolute top-0 right-0 block w-2 h-2 bg-red-500 rounded-full"></span>
-        </button>
+            className="
+      relative
+      p-2
+      rounded-lg
+      text-gray-400
+      transition-all duration-200 ease-out
+      hover:text-white
+      hover:bg-white/5
+      hover:scale-105
+      focus:outline-none focus:ring-2 focus:ring-green-500/40
+      group
+    "
+            aria-label="Admin Dashboard"
+          >
+            {/* Icon */}
+            <MdDashboard className="text-xl" />
+
+            {/* Notification Dot */}
+            <span
+              className="
+        absolute -top-0.5 -right-0.5
+        w-2 h-2 rounded-full bg-red-500
+        ring-2 ring-[#0f0f0f]
+      "
+            />
+
+            {/* Tooltip */}
+            <span
+              className="
+        pointer-events-none
+        absolute left-1/2 -bottom-9
+        -translate-x-1/2
+        whitespace-nowrap
+        rounded-md bg-black/90 px-2 py-1
+        text-xs text-gray-200
+        opacity-0 scale-95
+        transition-all duration-200
+        group-hover:opacity-100 group-hover:scale-100
+      "
+            >
+              Dashboard
+            </span>
+          </button>
         )}
         <button className="relative hover:text-gray-300 transition">
           <FaBell className="text-xl" />

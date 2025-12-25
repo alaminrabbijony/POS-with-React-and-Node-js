@@ -1,10 +1,36 @@
 import { FaSearch } from "react-icons/fa";
 import OrderList from "./OrderList.js";
+import { useQuery } from "@tanstack/react-query";
+import type { OrderTypes } from "../../types/types.js";
+import { getOrders } from "../../https/index.js";
+import CustomeLoader from "../shared/CustomeLoading.js";
+import { enqueueSnackbar } from "notistack";
 
 export default function RecentOrders() {
+  const {
+    data: orders = [],
+    isLoading,
+    isError,
+  } = useQuery<OrderTypes[]>({
+    queryKey: ["orders"],
+    queryFn: async () => {
+      const res = await getOrders();
+      return res.data.data;
+    },
+  });
+
+  if (isLoading) {
+    return <CustomeLoader message="Orders are loading..." />;
+  }
+
+  if (isError) {
+    enqueueSnackbar("Something went wrong while fetching orders", {
+      variant: "error",
+    });
+  }
+
   return (
     <div className="px-8 mt-6">
-      
       {/* Header Row */}
       <div className="flex justify-between items-center px-6 py-4">
         <h1 className="text-[#f5f5f5] text-lg font-semibold tracking-wide">
@@ -27,11 +53,10 @@ export default function RecentOrders() {
 
       {/* Order List */}
       <div className="mt-4 px-6 overflow-y-scroll h-[300px] scrollbar-hide">
-        {Array.from({ length: 12 }).map((_, i) => (
-          <OrderList key={i} />
+        {orders.map((order) => (
+          <OrderList key={order._id} order={order} />
         ))}
       </div>
-
     </div>
   );
 }

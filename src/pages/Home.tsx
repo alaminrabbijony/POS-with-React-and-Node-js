@@ -5,6 +5,7 @@ import Greetings from "../comp/home/Greetings.js";
 import MinCard from "../comp/home/MinCard.js";
 import RecentOrders from "../comp/home/RecentOrders.js";
 import PopularDishes from "../comp/home/PopularDishes.js";
+import RecentOrderDashBoard from "../comp/Dashboard/RecentOrderDashBoard.js";
 
 export default function Home() {
   return (

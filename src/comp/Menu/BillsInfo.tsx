@@ -53,15 +53,6 @@ const BillsInfo = () => {
 
       //After successful order placement, clear the cart and customer data
 
-      /* UPDATE TABLE STATUS TO BOOKED */
-
-      // const tableData = {
-      //   status: "Booked",
-      //   tableId: cusData.table.tableId,
-      //   orderId,
-      //   seats: cusData.table.seats,
-      // };
-      // await updateTable(tableData);
 
       /* FOR ONLINE PAYMENT */
 
@@ -71,6 +62,14 @@ const BillsInfo = () => {
         if (!data?.redirectUrl) {
           throw new Error("No redirect URL");
         }
+
+        /*            IMPORTANT 
+        SAVE IMPORTANT DATA BEFORE REDIRECTING
+        orderID, payment Id in local storage
+        */
+
+        localStorage.setItem("paymentId", data.paymentId);
+        localStorage.setItem("orderId", orderId);
 
         window.location.href = data.redirectUrl;
         return;

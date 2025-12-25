@@ -3,17 +3,83 @@ import { IoMdClose } from "react-icons/io";
 import { useDispatch } from "react-redux";
 import { ClipLoader } from "react-spinners";
 import useLoadOrderData from "../hooks/useOrderData.js";
-import { use } from "react";
+import { use, useEffect, useState } from "react";
+import { Navigate, replace, useLocation, useNavigate } from "react-router-dom";
+import { enqueueSnackbar } from "notistack";
+import { getReceipt } from "../https/index.js";
+import { useQuery } from "@tanstack/react-query";
+import type { ReceiptTypes } from "../types/types.js";
+import { formatBDDate } from "../const/index.js";
 const PaymentSuccess = () => {
-  // Redux Store
-  const searchParams = new URLSearchParams(location.search);
-  const orderId = searchParams.get("orderId");
+  //const [receipt, setReceipt] = useState<any>(null);
+  //const [orderData, setorderData] = useState<any>(null);
+  //const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isClose, setClose] = useState<boolean>(false);
 
-  
-  const { isLoading, data } = useLoadOrderData(orderId);
-  if (isLoading) return <ClipLoader size={40} color="#facc15" />;
+  const navigate = useNavigate();
+
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const tranId = params.get("tran_id");
+
+  /*  Fetch data
+
+  if (!tranId) return <Navigate to="/payment/failure" replace />;
+
+  useEffect(() => {
+    const loadReciept = async () => {
+      try {
+        const res = await getReceipt(tranId);
+        setReceipt(res.data?.receipt);
+        setorderData(res.data?.order);
+        //        setGateway()
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadReciept();
+  }, [tranId]);
+*/
+
+  // optimal fetching data
+
+  const { data, isLoading, isError } = useQuery<{data: ReceiptTypes}>({
+    queryKey: ["receipt", tranId],
+    queryFn: () => getReceipt(tranId),
+    enabled: !!tranId,
+    retry: 1,
+  });
+
+  if (isLoading) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-black">
+        <ClipLoader color="#22c55e" />
+      </div>
+    );
+  }
+
+  if (isError || !data) {
+    enqueueSnackbar("Something went wrong in the payment", {
+      variant: "error",
+    });
+    return <Navigate to="/payment/failure" replace />;
+  }
+
+  const receipt = data.data.receipt;
+  const orderData = data.data.order;
+  const gateway = data.data.gateway;
+
   // Functions
-  const handleModalClose = () => {};
+  const handleModalClose = () => {
+    if (isLoading) {
+      setClose(true);
+    }
+    setClose(false);
+    navigate("/");
+  };
   const handlePrint = () => {};
 
   return (
@@ -43,42 +109,48 @@ const PaymentSuccess = () => {
           {/* Receipt */}
           <div className="bg-[#151515] rounded-lg p-4 space-y-2 text-sm text-gray-300 border border-[#262626]">
             <div className="flex justify-between">
-              <span className="text-gray-400">Order ID</span>
+              <span className="text-gray-400">Transcation ID:</span>
               <span className="text-[#f5f5f5] font-medium">
-                #ORD-{data?.orderId}
+                #{receipt?.transactionId}
               </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-400">Table</span>
-              <span className="text-[#f5f5f5]">
-                {data?.table?.tableNo || "N/A"} 
-              </span>
+              <span className="text-gray-400">Payment Method:</span>
+              <span className="text-[#f5f5f5]">{receipt.method}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-400">Customer</span>
-              <span className="text-[#f5f5f5]">
-                {data?.customerDetails.name || "N/A"}
-              </span>
+              <span className="text-gray-400">Date:</span>
+              <span className="text-[#f5f5f5]">{formatBDDate(receipt.paidAt)}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-400">Table No:</span>
+              <span className="text-[#f5f5f5]">{orderData.table?.tableNo}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-400">Customer Name:</span>
+              <span className="text-[#f5f5f5]">{orderData.customer?.name}</span>
             </div>
 
             <div className="flex justify-between">
-              <span className="text-gray-400">Phone</span>
+              <span className="text-gray-400">Phone:</span>
               <span className="text-[#f5f5f5]">
-                {data?.customerDetails.phone || "017xxxxxxx"}
+                +88{orderData.customer?.phone || "017xxxxxxx"}
               </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-400">Guests</span>
+              <span className="text-gray-400">Guests:</span>
               <span className="text-[#f5f5f5]">
-                {data?.customerDetails.guests || "N/A"} 
+                {orderData.customer?.guests || "N/A"}
               </span>
             </div>
 
             <div className="border-t border-dashed border-[#2f2f2f] my-3" />
 
             <div className="flex justify-between text-base font-semibold">
-              <span className="text-gray-300">Total Paid</span>
-              <span className="text-green-400">৳ {data?.bills.totalWithTax}</span> 
+              <span className="text-gray-300">Total Paid:</span>
+              <span className="text-green-400">
+                ৳ {orderData.bills.totalWithTax}
+              </span>
             </div>
           </div>
 

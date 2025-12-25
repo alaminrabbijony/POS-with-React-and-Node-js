@@ -65,7 +65,7 @@ export default function TableCard({ id, name, status, initials }: TableCardProps
           {getAvatar(initials) || "N/A"}
           </h1>
       </div>
-      {userData.role === "Admin" && (
+      {/* {userData.role === "Admin" && (
         <button
           onClick={(e) => {
             e.stopPropagation();
@@ -76,7 +76,9 @@ export default function TableCard({ id, name, status, initials }: TableCardProps
         >
           <MdDeleteForever size={40} className="text-red-500" />
         </button>
-      )}
+      )} */}
+
+      
     </div>
   );
 }

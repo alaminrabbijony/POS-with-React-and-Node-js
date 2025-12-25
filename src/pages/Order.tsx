@@ -2,11 +2,34 @@ import { useState } from "react";
 import BackBtn from "../comp/shared/BackBtn.js";
 import OrderCard from "../comp/order/OrderCard.js";
 import BottomNav from "../comp/shared/BottomNav.js";
-
-
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { getOrders } from "../https/index.js";
+import { enqueueSnackbar } from "notistack";
+import type { OrderTypes } from "../types/types.js";
+import CustomeLoader from "../comp/shared/CustomeLoading.js";
 
 export default function Order() {
   const [status, setStatus] = useState<string>("All");
+  const { data: orders = [], isError, isLoading } = useQuery<OrderTypes[]>(
+    {
+      queryKey: ["orders"],
+      queryFn: async () => {
+       const res = await getOrders();
+        return res.data.data
+
+      },
+      placeholderData: keepPreviousData,
+    }
+  );
+
+  if(isLoading){
+    return <CustomeLoader message="Orders are loading....." />
+  }
+
+  if (isError)
+    enqueueSnackbar("Something went wrong while fetching data", {
+      variant: "error",
+    });
 
   return (
     <section className="bg-[#1f1f1f] h-[calc(100vh-5rem)] flex flex-col">
@@ -81,9 +104,13 @@ export default function Order() {
           w-full
         "
       >
-        {Array.from({ length: 20 }).map((_, i) => (
-          <OrderCard key={i} />
-        ))}
+        {orders.length > 0 ? (
+         orders.map((order) => {
+            return <OrderCard key={order._id} order={order} />;
+          })
+        ) : (
+          <p className="col=span=3 text-gray-500">No Orders available</p>
+        )}
       </div>
 
       <BottomNav />

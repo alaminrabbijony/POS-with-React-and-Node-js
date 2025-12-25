@@ -44,3 +44,15 @@ export const formatDate = (date: Date): string => {
     const seconds = String(date.getSeconds()).padStart(2, "0");
     return `${hours}:${minutes}:${seconds}`;
   };
+  export const formatBDDate = (date: string | Date) => {
+  const d = new Date(date)
+
+  return d.toLocaleString("en-BD", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  })
+}

@@ -18,6 +18,8 @@ import { ClipLoader } from "react-spinners";
 import Dashboard from "./pages/Dashboard.js";
 import PaymentSuccess from "./pages/PaymentSuccess.js";
 import PaymentFailure from "./pages/PaymentFailure.js";
+import PaymentProcessing from "./pages/PaymentProcessing.js";
+import CustomeLoader from "./comp/shared/CustomeLoading.js";
 
 
 
@@ -38,7 +40,7 @@ const Layout = () => {
  
   const isLoading = useLoadUserData()
 
-  if(isLoading) return <ClipLoader size={40} color="#facc15" />
+  if(isLoading) return <CustomeLoader message="App's loading...." />
 
 
 
@@ -90,25 +92,25 @@ const Layout = () => {
             </ProtectedRoutes>
           }
         />
-        <Route
-          path="/processing"
+        {/* <Route
+          path="/processing/*"
           element={
             <ProtectedRoutes>
-              <PaymentFailure />
+              <PaymentProcessing />
             </ProtectedRoutes>
           }
-        />
+        /> */}
 
         <Route
-          path="/success"
+          path="/payment/success/*"
           element={
             <ProtectedRoutes>
-              <PaymentSuccess />
+             <PaymentSuccess />
             </ProtectedRoutes>
           }
         />
          <Route
-          path="/failure"
+          path="/payment/failure/*"
           element={
             <ProtectedRoutes>
               <PaymentFailure />

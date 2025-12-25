@@ -12,19 +12,22 @@ import type { Table, tableObjProps } from "../types/types.js";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { getTableData } from "../https/index.js";
 import { enqueueSnackbar } from "notistack";
+import CustomeLoader from "../comp/shared/CustomeLoading.js";
 
 export default function Tables() {
   const [status, setStatus] = useState<string>("All");
-  const isLoading = useLoadTableData();
   const tablesData = useSelector((state: any) => state.table);
 
-  const { data: resdata, isError } = useQuery({
+  const { data: resdata, isError, isLoading } = useQuery({
     queryKey: ["tables"],
     queryFn: async () => {
       return await getTableData();
     },
     placeholderData: keepPreviousData,
   });
+
+  if(isLoading) return <CustomeLoader message="Tables are loading...." />
+
   if (isError)
     enqueueSnackbar("Something went wrong in fetching tables", {
       variant: "error",

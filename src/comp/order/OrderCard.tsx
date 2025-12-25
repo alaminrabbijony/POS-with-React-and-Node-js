@@ -1,52 +1,91 @@
 import React from "react";
 import { FaCheckCircle } from "react-icons/fa";
+import type { OrderTypes } from "../../types/types.js";
+import { formatBDDate, getAvatar } from "../../const/index.js";
+import { getOrderStatusStyle, ORDER_STATUS_STYLES } from "../../util/style.js";
 
-const OrderCard = () => {
-  return (
-    <div className="bg-[#262626] border border-[#2f2f2f] rounded-xl p-6 w-full min-h-[180px] hover:bg-[#2e2e2e] transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer flex flex-col justify-between">
-      {/* Header */}
+
+type orderProps = {
+  order: OrderTypes
+}
+
+const OrderCard = ({order}: orderProps) => {
+
+  const statusUI =getOrderStatusStyle(order.orderStatus)
+
+   return (
+    <div
+      className="
+        bg-[#1f1f1f] border border-[#2b2b2b] rounded-2xl
+        p-5 w-full min-h-[170px]
+        transition-all duration-200
+        hover:border-[#3a3a3a] hover:bg-[#242424]
+        hover:shadow-lg cursor-pointer
+        flex flex-col justify-between
+      "
+    >
+      {/* HEADER */}
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-3">
-          <div className="bg-yellow-500 text-black font-bold text-base rounded-md w-12 h-12 flex items-center justify-center">
-            AM
+          <div className="bg-[#facc15] text-black font-semibold rounded-lg w-11 h-11 flex items-center justify-center">
+            {getAvatar(order.customerDetails.name)}
           </div>
+
           <div>
-            <h1 className="text-[#f5f5f5] font-semibold text-lg leading-tight">
-              Amrit Raj
+            <h1 className="text-white font-semibold text-base leading-tight">
+              {order.customerDetails.name}
             </h1>
-            <p className="text-[#999] text-sm">#101 / Dine in</p>
+            <p className="text-xs text-[#9a9a9a] mt-0.5">
+              #{order._id.slice(-6)} • Dine In
+            </p>
           </div>
         </div>
 
-        <div className="text-right">
-          <p className="text-green-500 flex items-center gap-2 text-sm font-medium">
-            <FaCheckCircle /> Ready
-          </p>
-          <p className="text-[#888] text-xs flex items-center gap-2">
-            <span className="inline-block w-2 h-2 rounded-full bg-green-600"></span>
-            Ready to serve
-          </p>
-        </div>
+        {/* STATUS BADGE */}
+        <span
+  className={`
+    flex items-center gap-1.5
+    text-xs font-medium
+    px-3 py-1 rounded-full
+    ${statusUI.bg} ${statusUI.text}
+  `}
+>
+  {statusUI.icon}
+  {statusUI.label}
+</span>
+  {/* <span
+  className={`
+    flex items-center gap-1.5
+    text-xs font-medium
+    px-3 py-1 rounded-full
+    "text-yellow-400"
+  `}
+>
+  {order.orderStatus}
+</span> */}
       </div>
 
-      {/* Footer */}
-      <div>
-        <div className="flex items-center justify-between text-[#ababab] text-sm mt-4">
-          <p>January 18, 2025 • 08:32 PM</p>
-          <p>8 Items</p>
-        </div>
+      {/* MIDDLE */}
+      <div className="flex items-center justify-between mt-4 text-sm text-[#b5b5b5]">
+        <p>
+         {formatBDDate(order.orderDate)}
+        </p>
+        <p>{order.items.length} items</p>
+      </div>
 
-        <hr className="border-[#3a3a3a] my-3" />
+      <hr className="border-[#2f2f2f] my-3" />
 
-        <div className="flex items-center justify-between">
-          <p className="text-[#ababab] text-xs uppercase tracking-wider">
-            Total
-          </p>
-          <p className="text-white text-2xl font-bold">₹250.00</p>
-        </div>
+      {/* FOOTER */}
+      <div className="flex items-end justify-between">
+        <p className="text-xs uppercase tracking-widest text-[#8f8f8f]">
+          Total
+        </p>
+        <p className="text-white text-2xl font-bold">
+          ৳ {order.bills.totalWithTax}
+        </p>
       </div>
     </div>
-  );
+  )
 };
 
 export default OrderCard;

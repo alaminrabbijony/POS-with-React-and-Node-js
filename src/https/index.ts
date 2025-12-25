@@ -67,9 +67,9 @@ export const updateTable = ({tableId, ...table}: tableData) => api.put(`/api/tab
 // Order Endpoints
 export const addOrder = (data: any) => api.post("/api/order", data)
 export const getOrders = () => api.get("/api/order")
-export const getReceipt = (orderId: string| null) => api.get(`/api/order/receipt/${orderId}`)
 
 
 // Payment Endpoints
 export const createSSLCommerzOrder = (data: any) => api.post("/api/payment/init", data)
-export const validatePayment = () => api.post("/api/payment/validate")
+//export const validatePayment = (paymentId: string) => api.post("/api/payment/validate", { paymentId })
+export const getReceipt = (tran_id: string| null) => api.get(`/api/payment/receipt/${tran_id}`)
