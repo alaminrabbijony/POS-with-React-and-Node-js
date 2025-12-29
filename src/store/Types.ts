@@ -1,5 +1,5 @@
 export type CustomerInfoTypes = {
-    orderId: string;
+    orderId: string | null;
     customerName: string;
     customerPhone: string;
     guest: number;

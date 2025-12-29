@@ -21,28 +21,18 @@ import PaymentFailure from "./pages/PaymentFailure.js";
 import PaymentProcessing from "./pages/PaymentProcessing.js";
 import CustomeLoader from "./comp/shared/CustomeLoading.js";
 
-
-
-  const ProtectedRoutes = ({children}: any) => {
-      const { isAuth } = useSelector((state: any) => state.user);
-    if (!isAuth) {
-      return <Navigate to={"/auth"} />
-    }
-    return children
-  };
-
-
+const ProtectedRoutes = ({ children }: any) => {
+  const { isAuth } = useSelector((state: any) => state.user);
+  if (!isAuth) {
+    return <Navigate to={"/auth"} />;
+  }
+  return children;
+};
 
 const Layout = () => {
   const location = useLocation();
   const hidePathLayout = ["/auth"];
   const { isAuth } = useSelector((state: any) => state.user);
- 
-  const isLoading = useLoadUserData()
-
-  if(isLoading) return <CustomeLoader message="App's loading...." />
-
-
 
   return (
     <>
@@ -57,7 +47,10 @@ const Layout = () => {
             </ProtectedRoutes>
           }
         />
-        <Route path="/auth" element={isAuth ? <Navigate to={'/'} /> : <Auth /> } />
+        <Route
+          path="/auth"
+          element={isAuth ? <Navigate to={"/"} /> : <Auth />}
+        />
         <Route
           path="/order"
           element={
@@ -105,11 +98,11 @@ const Layout = () => {
           path="/payment/success/*"
           element={
             <ProtectedRoutes>
-             <PaymentSuccess />
+              <PaymentSuccess />
             </ProtectedRoutes>
           }
         />
-         <Route
+        <Route
           path="/payment/failure/*"
           element={
             <ProtectedRoutes>
@@ -126,10 +119,19 @@ const Layout = () => {
   );
 };
 
+const AppShell = () => {
+  const isLoading = useLoadUserData();
+
+  if (isLoading) return <CustomeLoader message="App's loading...." />;
+
+  return <Layout />
+
+};
+
 export default function App() {
   return (
     <Router>
-      <Layout />
+      <AppShell />
     </Router>
   );
 }

@@ -4,36 +4,40 @@ import { MdOutlineBorderColor, MdTableBar, MdMoreHoriz } from "react-icons/md";
 import { BiSolidDish } from "react-icons/bi";
 import { useLocation, useNavigate } from "react-router-dom";
 import Modal from "./Modal.js";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch } from "../../store/redux/store.js";
 import { setCustomerInfo } from "../../store/redux/slices/CustomerSlices.js";
 
 export default function BottomNav() {
-  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [guestCount, setGuestCount] = useState<number>(0);
+  // const [guestCount, setGuestCount] = useState<number>(0);
+  // const [name, setName] = useState<string>("");
+  // const [phone, setPhone] = useState<string>("");
+
   const location = useLocation();
-  const [name, setName] = useState<string>("");
-  const [phone, setPhone] = useState<string>("");
+  const navigate = useNavigate();
+  const customer = useSelector((state:any) => state.customer)
   const dispatch = useDispatch<AppDispatch>();
 
   const isActive = (path: string) => location.pathname === path;
 
-  const decrement = () => {
-    if (guestCount <= 0) return;
-    setGuestCount((prev) => prev - 1);
-  };
+  const decrement = () =>
+  dispatch(setCustomerInfo({
+    ...customer,
+    guest: Math.min((customer.guest || 0) - 1, 6),
+  }));
 
-  const increment = () => {
-    if (guestCount >= 6) return;
-    setGuestCount((prev) => prev + 1);
-  };
+
+ const increment = () =>
+  dispatch(setCustomerInfo({
+    ...customer,
+    guest: Math.min((customer.guest || 0) + 1, 6),
+  }));
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
   const handleCreateOrder = () => {
     // send data to rdeux store
-    dispatch(setCustomerInfo({ name, phone, guest: guestCount }));
     navigate("/tables");
     closeModal();
   };
@@ -104,8 +108,12 @@ export default function BottomNav() {
           <div className="flex items-center rounded-lg p-3 px-4 bg-[#1f1f1f]">
             <input
               type="text"
-              value={name}
-              onChange={(e) =>  setName(e.target.value)}
+              value={customer.customerName ?? ""}
+              onChange={(e) => {
+                dispatch(setCustomerInfo({
+                  ...customer, name: e.target.value
+                }))
+              }}
               placeholder="Enter Customer Name"
               className="bg-transparent flex-1 text-white focus:outline-none"
             />
@@ -120,8 +128,13 @@ export default function BottomNav() {
           <div className="flex items-center rounded-lg p-3 px-4 bg-[#1f1f1f]">
             <input
               type="number"
-              value={phone}
-              onChange={(e) =>  setPhone(e.target.value)}
+              value={customer.customerPhone ?? ""}
+              onChange={(e) => {
+                dispatch(setCustomerInfo({
+                  ...customer,
+                  phone: e.target.value
+                }))
+              }}
               placeholder="+8801XXXXXXXXX"
               className="bg-transparent flex-1 text-white focus:outline-none"
             />
@@ -139,7 +152,7 @@ export default function BottomNav() {
               &minus;
             </button>
 
-            <span className="text-white">{guestCount} Person</span>
+            <span className="text-white">{customer.guest || 0} Person</span>
 
             <button onClick={increment} className="text-yellow-500 text-2xl">
               &#43;

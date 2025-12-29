@@ -1,32 +1,46 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { CustomerInfoTypes } from "../../Types.js";
 
-const intialState : CustomerInfoTypes = {
-    orderId: '',
-    customerName: "",
-    customerPhone: "",
-    guest: 0,
-    table: null,
-}
+const initialState: CustomerInfoTypes = {
+  orderId: null,
+  customerName: "",
+  customerPhone: "",
+  guest: 0,
+  table: null,
+};
 
-const customerSlice =  createSlice({
-    name: 'customer',
-    initialState: intialState,
-    reducers: {
-        setCustomerInfo: (state, action) => {
-            const {name, phone, guest, tableNo} = action.payload;
-            state.orderId = `${Date.now()}`;
-            state.customerName = name;
-            state.customerPhone = phone;
-            state.guest = guest;
-            state.table = null;
-        },
-        removeCustomerInfo : (state) => intialState,
-        updateTable: (state, action) => {
-            state.table = action.payload.table;
-        }
-    }
-})
+const customerSlice = createSlice({
+  name: "customer",
+  initialState,
+  reducers: {
+    setCustomerInfo: (state, action) => {
+      // create orderId ONCE
+      if (!state.orderId) {
+        state.orderId = `${Date.now()}`;
+      }
 
-export const {setCustomerInfo, removeCustomerInfo, updateTable} = customerSlice.actions;
-export default customerSlice.reducer
+      // merge only provided fields
+      if (action.payload.name !== undefined) {
+        state.customerName = action.payload.name;
+      }
+
+      if (action.payload.phone !== undefined) {
+        state.customerPhone = action.payload.phone;
+      }
+
+      if (action.payload.guest !== undefined) {
+        state.guest = action.payload.guest;
+      }
+    },
+
+    updateTable: (state, action) => {
+      state.table = action.payload.table;
+    },
+
+    removeCustomerInfo: () => initialState,
+  },
+});
+
+export const { setCustomerInfo, removeCustomerInfo, updateTable } =
+  customerSlice.actions;
+export default customerSlice.reducer;
