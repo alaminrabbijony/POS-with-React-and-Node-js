@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { motion } from "framer-motion";
 import type { ErrorRes, tableObjProps } from "../../types/types.js";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, QueryClient, useQueryClient } from '@tanstack/react-query';
 import { enqueueSnackbar } from "notistack";
 import { Axios, AxiosError } from "axios";
 import { useDispatch } from "react-redux";
@@ -16,9 +16,10 @@ const tableObj: tableObjProps = {
   status: "available",
 };
 
-const DashModal = ({ setIsTableModalOpen }: any) => {
+const CreateTableModal = ({ setIsTableModalOpen }: any) => {
   const [tableData, setTableData] = useState(tableObj);
   const dispatch = useDispatch();
+  const queryClient = useQueryClient() 
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
@@ -41,6 +42,7 @@ const DashModal = ({ setIsTableModalOpen }: any) => {
   >({
     mutationFn: (reqData) => addTable(reqData),
     onSuccess: (res) => {
+      queryClient.invalidateQueries({ queryKey: ["tables"] });
       const { data } = res.data;
       dispatch(createTable(data)); //Local first
       setIsTableModalOpen(false);
@@ -61,7 +63,7 @@ const DashModal = ({ setIsTableModalOpen }: any) => {
         transition={{ duration: 0.3, ease: "easeInOut" }}
         className="bg-[#262626] p-6 rounded-lg shadow-lg w-96"
       >
-        {/* DashModal Header */}
+        {/* CreateTableModal Header */}
 
         <div className="flex justify-between item-center mb-4">
           <h2 className="text-[#f5f5f5] text-xl font-semibold">Add Table</h2>
@@ -73,7 +75,7 @@ const DashModal = ({ setIsTableModalOpen }: any) => {
           </button>
         </div>
 
-        {/* DashModal Body */}
+        {/* CreateTableModal Body */}
 
         <form onSubmit={handleSubmit} className="space-y-4 mt-10">
           <div>
@@ -120,4 +122,4 @@ const DashModal = ({ setIsTableModalOpen }: any) => {
   );
 };
 
-export default DashModal;
+export default CreateTableModal;

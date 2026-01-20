@@ -16,7 +16,6 @@ import CustomeLoader from "../comp/shared/CustomeLoading.js";
 
 export default function Tables() {
   const [status, setStatus] = useState<string>("All");
-  const tablesData = useSelector((state: any) => state.table);
 
   const { data: resdata, isError, isLoading } = useQuery({
     queryKey: ["tables"],

@@ -55,7 +55,7 @@ export default function OrderList({ order }: OrderProps) {
             border border-[#3a3a3a]
           "
         >
-          Table {order.table.tableNo}
+          Table {order.table?.tableNo || "N/A"}
         </span>
       </div>
 

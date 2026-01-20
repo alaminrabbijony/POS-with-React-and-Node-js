@@ -9,167 +9,170 @@ import type { AppDispatch } from "../../store/redux/store.js";
 import { setCustomerInfo } from "../../store/redux/slices/CustomerSlices.js";
 
 export default function BottomNav() {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  // const [guestCount, setGuestCount] = useState<number>(0);
-  // const [name, setName] = useState<string>("");
-  // const [phone, setPhone] = useState<string>("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
-  const customer = useSelector((state:any) => state.customer)
+  const customer = useSelector((state: any) => state.customer);
   const dispatch = useDispatch<AppDispatch>();
 
   const isActive = (path: string) => location.pathname === path;
 
   const decrement = () =>
-  dispatch(setCustomerInfo({
-    ...customer,
-    guest: Math.min((customer.guest || 0) - 1, 6),
-  }));
+    dispatch(
+      setCustomerInfo({
+        ...customer,
+        guest: Math.max((customer.guest || 0) - 1, 0),
+      })
+    );
 
-
- const increment = () =>
-  dispatch(setCustomerInfo({
-    ...customer,
-    guest: Math.min((customer.guest || 0) + 1, 6),
-  }));
-
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
-  const handleCreateOrder = () => {
-    // send data to rdeux store
-    navigate("/tables");
-    closeModal();
-  };
+  const increment = () =>
+    dispatch(
+      setCustomerInfo({
+        ...customer,
+        guest: Math.min((customer.guest || 0) + 1, 6),
+      })
+    );
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-[#262626] p-2 flex justify-around items-center py-2 border-t border-[#1f1f1f] text-white">
-      {/* Home Button */}
-      <button
-        onClick={() => navigate("/")}
-        className={`flex items-center justify-center font-bold 
-          ${
-            isActive("/") ? "text-[#f5f5f5] bg-[#343434]" : "text-[#ababab]"
-          } w-[300px] rounded-20px`}
+    <>
+      {/* Bottom Navigation */}
+      <nav
+        className="fixed bottom-0 left-0 right-0 h-[72px] 
+                   bg-[#1f1f1f] border-t border-[#2a2a2a]
+                   flex items-center justify-around
+                   text-xs text-[#bdbdbd] z-50"
       >
-        <FaHome className="inline mr-4" size={15} />
-        Home
-      </button>
+        {/* Home */}
+        <NavItem
+          active={isActive("/")}
+          label="Home"
+          icon={<FaHome size={18} />}
+          onClick={() => navigate("/")}
+        />
 
-      {/* Orders Button */}
+        {/* Orders */}
+        <NavItem
+          active={isActive("/order")}
+          label="Orders"
+          icon={<MdOutlineBorderColor size={18} />}
+          onClick={() => navigate("/order")}
+        />
+
+        {/* Tables */}
+        <NavItem
+          active={isActive("/tables")}
+          label="Tables"
+          icon={<MdTableBar size={18} />}
+          onClick={() => navigate("/tables")}
+        />
+
+        {/* More */}
+        <NavItem
+          label="More"
+          icon={<MdMoreHoriz size={18} />}
+        />
+      </nav>
+
+      {/* Floating Action Button */}
       <button
-        onClick={() => navigate("/order")}
-        className={`flex items-center justify-center font-bold 
-          ${
-            isActive("/order")
-              ? "text-[#f5f5f5] bg-[#343434]"
-              : "text-[#ababab]"
-          } w-[300px] rounded-20px`}
+        onClick={() => setIsModalOpen(true)}
+        className="fixed 
+                   bottom-[calc(var(--bottom-nav-h,72px)+12px)] 
+                   right-6 z-50
+                   bg-[#F6B100] text-black
+                   w-14 h-14 rounded-full
+                   flex items-center justify-center
+                   shadow-lg hover:scale-105 transition"
       >
-        <MdOutlineBorderColor className="inline mr-4" size={15} />
-        Orders
-      </button>
-
-      {/* Tables Button */}
-      <button
-        onClick={() => navigate("/tables")}
-        className={`flex items-center justify-center font-bold 
-          ${
-            isActive("/tables")
-              ? "text-[#f5f5f5] bg-[#343434]"
-              : "text-[#ababab]"
-          } w-[300px] rounded-20px`}
-      >
-        <MdTableBar className="inline mr-4" size={15} />
-        Tables
-      </button>
-
-      {/* More Button */}
-      <button className="flex items-center justify-center text-[#ababab] w-[200px]">
-        <MdMoreHoriz className="inline mr-4" size={15} />
-        More
-      </button>
-
-      {/* Floating Add Order Button */}
-      <button
-        onClick={openModal}
-        className="absolute bottom-3 bg-[#F6B100] text-[#f5f5f5] rounded-full p-4"
-      >
-        <BiSolidDish />
+        <BiSolidDish size={22} />
       </button>
 
       {/* Modal */}
-      <Modal isOpen={isModalOpen} onClose={closeModal} title="Create Order">
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Create Order">
         {/* Customer Name */}
-        <div>
-          <label className="block text-[#ababab] mb-3 text-sm font-medium">
-            Customer Name
-          </label>
-          <div className="flex items-center rounded-lg p-3 px-4 bg-[#1f1f1f]">
-            <input
-              type="text"
-              value={customer.customerName ?? ""}
-              onChange={(e) => {
-                dispatch(setCustomerInfo({
-                  ...customer, name: e.target.value
-                }))
-              }}
-              placeholder="Enter Customer Name"
-              className="bg-transparent flex-1 text-white focus:outline-none"
-            />
-          </div>
-        </div>
+        <Field label="Customer Name">
+          <input
+            value={customer.customerName ?? ""}
+            onChange={(e) =>
+              dispatch(setCustomerInfo({ ...customer, name: e.target.value }))
+            }
+            placeholder="Enter customer name"
+            className="input"
+          />
+        </Field>
 
-        {/* Customer Phone */}
-        <div>
-          <label className="block text-[#ababab] mb-5 text-sm font-medium">
-            Customer Phone Number
-          </label>
-          <div className="flex items-center rounded-lg p-3 px-4 bg-[#1f1f1f]">
-            <input
-              type="number"
-              value={customer.customerPhone ?? ""}
-              onChange={(e) => {
-                dispatch(setCustomerInfo({
-                  ...customer,
-                  phone: e.target.value
-                }))
-              }}
-              placeholder="+8801XXXXXXXXX"
-              className="bg-transparent flex-1 text-white focus:outline-none"
-            />
-          </div>
-        </div>
+        {/* Phone */}
+        <Field label="Phone Number">
+          <input
+            value={customer.customerPhone ?? ""}
+            onChange={(e) =>
+              dispatch(setCustomerInfo({ ...customer, phone: e.target.value }))
+            }
+            placeholder="+8801XXXXXXXXX"
+            className="input"
+          />
+        </Field>
 
-        {/* Guest Count */}
-        <div className="block mb-2 mt-3 text-sm font-medium text-[#ababab]">
-          <label className="flex items-center justify-between bg-[#1f1f1f] px-4 py-3 rounded-lg">
-            Guest
-          </label>
-
-          <div className="flex items-center justify-between bg-[#1f1f1f] px-4 py-3 rounded-lg mt-2">
-            <button onClick={decrement} className="text-yellow-500 text-2xl">
-              &minus;
+        {/* Guest */}
+        <div className="mt-4">
+          <label className="text-sm text-[#ababab] mb-2 block">Guests</label>
+          <div className="flex items-center justify-between bg-[#1f1f1f] rounded-lg px-4 py-3">
+            <button onClick={decrement} className="text-yellow-500 text-xl">
+              −
             </button>
-
             <span className="text-white">{customer.guest || 0} Person</span>
-
-            <button onClick={increment} className="text-yellow-500 text-2xl">
-              &#43;
+            <button onClick={increment} className="text-yellow-500 text-xl">
+              +
             </button>
           </div>
         </div>
 
-        {/* Create Order Button */}
         <button
-          className="w-full bg-[#F6B100] text-[#f5f5f5] rounded-lg py-3 mt-8 hover:bg-yellow-700"
+          className="w-full bg-[#F6B100] text-black rounded-lg py-3 mt-6 font-semibold"
           onClick={() => {
-            handleCreateOrder();
+            navigate("/tables");
+            setIsModalOpen(false);
           }}
         >
           Create Order
         </button>
       </Modal>
+    </>
+  );
+}
+
+/* ---------- Reusable Components ---------- */
+
+function NavItem({
+  icon,
+  label,
+  active,
+  onClick,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  active?: boolean;
+  onClick?: () => void;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={`flex flex-col items-center justify-center w-full h-full
+        ${active ? "text-white" : "text-[#9a9a9a]"}
+        hover:text-white transition`}
+    >
+      {icon}
+      <span className="mt-1 text-[11px] font-medium">{label}</span>
+    </button>
+  );
+}
+
+function Field({ label, children }: any) {
+  return (
+    <div className="mt-4">
+      <label className="block text-sm text-[#ababab] mb-2">{label}</label>
+      <div className="bg-[#1f1f1f] rounded-lg px-4 py-3">{children}</div>
     </div>
   );
 }
